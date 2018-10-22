@@ -26,9 +26,15 @@ app.get("/api/hello", function (req, res) {
 
 //FCC Project
 app.get('/api/timestamp/:date_string?', function(req, res) {
-  if (req.params.date_string == undefined) {
+  if (req.params.date_string == null) {
     var curDate = new Date()
     res.send({unix: curDate.getTime(), utc: curDate.toUTCString()})
+  }
+  else if (Number.isInteger(req.params.date_string * 1000)) {
+    var date = new Date(req.params.date_string * 1000)
+    if (date != 'Invalid Date') {
+      res.send({unix: req.params.date_string * 1000, utc: date.toUTCString()})
+    }
   }
   else
     var date = new Date(req.params.date_string)
